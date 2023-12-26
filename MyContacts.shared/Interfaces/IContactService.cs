@@ -11,6 +11,7 @@ public interface IContactService
 
 
     bool AddContactToList(IContact contact);
+    bool EditContactInList(IContact contact);
     bool RemoveContactFromList(IContact contact);
     List<IContact> GetContactsFromList();
     IContact GetContactFromListByEmail(string email);

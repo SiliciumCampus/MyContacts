@@ -44,6 +44,29 @@ public class ContactService : IContactService
         return false;
     }
 
+    public bool EditContactInList(IContact contact)
+    {
+        try
+        {
+            GetContactsFromList();
+
+            if (_contacts.Any(x => x.Id == contact.Id))
+            {
+                Guid _id = contact.Id;
+                int index = _contacts.IndexOf(_contacts.Find(x => x.Id == _id)!);
+                _contacts.Remove(_contacts.Find(x => x.Id == _id)!);
+                _contacts.Insert(index, contact) ;
+
+                string json = JsonConvert.SerializeObject(_contacts, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+                _fileService.SaveContentToFile(_filePath, json);
+
+            }
+
+        }
+        catch (Exception ex) { Debug.WriteLine(ex.Message); }
+        return false;
+    }
+
     public bool RemoveContactFromList(IContact contact)
     {
         try

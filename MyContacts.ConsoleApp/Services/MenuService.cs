@@ -1,6 +1,7 @@
 ﻿using MyContacts.shared.Interfaces;
 using MyContacts.shared.Models;
 using MyContacts.shared.Services;
+using System;
 using System.Diagnostics;
 
 namespace MyContacts.ConsoleApp.Services;
@@ -143,15 +144,15 @@ internal class MenuService
         int phoneLength = contact.ContactInfo.PhoneNumber.Length;
 
         Console.WriteLine("");
-        Console.WriteLine($"               {contact.Name.FirstName} {contact.Name.LastName}");
-        for (int i = -31; i< fullNameLength; i++)
+        Console.WriteLine($"             {contact.Name.FirstName} {contact.Name.LastName}");
+        for (int i = -30; i< fullNameLength; i++)
         {
             Console.Write("_");
         }
         Console.WriteLine("\n");
 
 
-        for (int i = 1; i <middle ; i++)
+        for (int i = 3; i <middle ; i++)
         {
             Console.Write(" ");
         }
@@ -164,7 +165,7 @@ internal class MenuService
         Console.Write($"{contact.ContactInfo.Email}\n\n");
 
 
-        for (int i = 2; i < middle; i++)
+        for (int i = 4; i < middle; i++)
         {
             Console.Write(" ");
         }
@@ -181,7 +182,7 @@ internal class MenuService
 
             int adressLength = contact.ContactAdress.Address.Length;
             int postalLength = (contact.ContactAdress.ZipCode.Length + contact.ContactAdress.City.Length);
-            for (int i = 2; i < middle; i++)
+            for (int i = 4; i < middle; i++)
             {
                 Console.Write(" ");
             }
@@ -287,7 +288,78 @@ internal class MenuService
 
     public void EditContactMenu(IContact contact)
     {
+        
+        string _firstName = contact.Name.FirstName;
+        string _lastName = contact.Name.LastName;
+        string _email = contact.ContactInfo.Email;
+        string _phone = contact.ContactInfo.PhoneNumber;
+        string _street = contact.ContactAdress.Address;
+        string _city = contact.ContactAdress.City;
+        string _zip = contact.ContactAdress.ZipCode;
+        bool running = true;
 
+
+        while (running)
+        {
+            Console.Clear();
+            Console.WriteLine("What would you like to edit?\n");
+            Console.WriteLine($"1.  Name             ({_firstName} {_lastName})");
+            Console.WriteLine($"2.  ContactInfo      ({_email} {_phone})");
+            Console.WriteLine($"3.  Adress           ({_street} {_zip} {_city})");
+
+            Console.WriteLine("\nQ.  To go back to main menu.");
+
+            string answer = Console.ReadLine()!.ToLower();
+            switch (answer)
+            {
+                case "1":
+                    Console.Clear();
+                    Console.Write("First name: ");
+                    _firstName = Console.ReadLine()!;
+                    Console.Write("Last name: ");
+                    _lastName = Console.ReadLine()!;
+                    Console.ReadKey();
+                    break;
+                case "2":
+                    Console.Clear();
+                    Console.Write("Email: ");
+                    _email = Console.ReadLine()!;
+                    Console.Write("Phone number: ");
+                    _phone = Console.ReadLine()!;
+                    Console.ReadKey();
+                    break;
+                case "3":
+                    Console.Clear();
+                    Console.Write("Adress: ");
+                    _street = Console.ReadLine()!;
+                    Console.Write("City: ");
+                    _city = Console.ReadLine()!;
+                    Console.Write("Zip code: ");
+                    _zip = Console.ReadLine()!;
+                    Console.ReadKey();
+                    break;
+                case "q":
+                    Console.Clear() ;
+                    Console.WriteLine("Going back to main menu. \nPress any key to continue.");
+                    Console.ReadKey();
+                    running = false;
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Invalid input. Must be 1,2,3 or Q!\nPress any key to try again.");
+                    Console.ReadKey();
+                    break;
+            }
+        }
+        contact.Name.FirstName = _firstName;
+        contact.Name.LastName = _lastName;
+        contact.ContactInfo.Email = _email;
+        contact.ContactInfo.PhoneNumber = _phone;
+        contact.ContactAdress.Address = _street;
+        contact.ContactAdress.City = _city;
+        contact.ContactAdress.ZipCode = _zip;
+
+        _contactService.EditContactInList(contact);
     }
     public void SearchByPositionMenu()
     {
@@ -432,7 +504,7 @@ internal class MenuService
     }
 }
 
-// SearhbyPosition
+
 // Edit
-// Remove
+
 
